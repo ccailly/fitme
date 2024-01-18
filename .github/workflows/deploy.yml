@@ -1,0 +1,25 @@
+name: 🚚 Deploy Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy Prod
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Deploy to Prod
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ubuntu
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            cd /var/www/fitme
+            sudo chmod +x ./deploy.sh
+            ./deploy.sh
