@@ -64,3 +64,16 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Contenu de la l'application
+
+Feed : 
+    - post de ses communautés.
+    - post de toutes les communautés.
+Communauté :
+    - Détails de la communauté sélectionné.
+Profil :
+    - Résumé de ses infos
+    - liste des communautés
+Calendrier des activités :
+    - planification de ses événements à venir.
