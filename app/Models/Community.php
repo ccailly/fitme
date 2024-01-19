@@ -19,4 +19,12 @@ class Community extends Model
         'description',
         'image',
     ];
+
+    /**
+     * Get the members for the community.
+     */
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'community_members');
+    }
 }

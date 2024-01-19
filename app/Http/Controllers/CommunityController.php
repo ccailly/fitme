@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Community;
 
 class CommunityController extends Controller
 {
-    public function community()
+    public function community(Community $community)
     {
-        return view('community');
+        //dd($community);
+        return view('community', [
+            'community' => $community
+        ]);
     }
 }

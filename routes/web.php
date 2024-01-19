@@ -28,6 +28,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/community', [CommunityController::class, 'community'])->name('community');
+Route::get('/community/{community:id}', [CommunityController::class, 'community'])->name('community');
 
 require __DIR__.'/auth.php';
