@@ -20,7 +20,7 @@ class EventPostsFactory extends Factory
     {
         return [
             'event_id' => Event::inRandomOrder()->first()->id,
-            'post_id' => Post::inRandomOrder()->first()->id,
+            'post_id' => Post::inRandomOrder()->first()->id
         ];
     }
 }

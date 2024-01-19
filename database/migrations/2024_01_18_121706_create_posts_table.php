@@ -16,8 +16,6 @@ return new class extends Migration
             $table->longText('content');
             $table->foreignId('community_id')->constrained('communities');
             $table->foreignId('user_id')->constrained('users');
-            $table->dateTime('date');
-            $table->boolean('is_event')->default(false);
             $table->timestamps();
         });
     }

@@ -24,8 +24,6 @@ class PostFactory extends Factory
             'content' => $this->faker->realText(100),
             'community_id' => Community::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
-            'date' => $this->faker->dateTimeBetween('-1 year', 'now'),
-            "is_event" => $this->faker->boolean(),
         ];
     }
 }
