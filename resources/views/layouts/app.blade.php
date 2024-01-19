@@ -1,6 +1,6 @@
 @props([
     'title',
-    'activeTab'
+    'activeTab' => 1
 ])
 
 <!DOCTYPE html>

@@ -1,5 +1,5 @@
-<x-app-layout title="Communauté">
-    <x-slot name="title">CommunautéName</x-slot>
+<x-app-layout title="Communauté" activeTab=2>
+    <x-slot name="title">Communauté</x-slot>
     <div class="container mx-auto mt-auto">
         <div class="bg-white p-4 rounded shadow-md">
             <div class="flex flex-row justify-between">
