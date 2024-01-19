@@ -252,4 +252,6 @@
                 });
         }
     </script>
+
+    <x-post-modal />
 </x-app-layout>
