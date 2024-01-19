@@ -9,6 +9,8 @@ class FeedController extends Controller
 {
     public function index(Request $request): View
     {
-        return view('feed');
+        return view('feed', [
+            'title' => 'Mon Feed'
+        ]);
     }
 }

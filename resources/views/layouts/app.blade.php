@@ -1,3 +1,8 @@
+@props([
+    'title',
+    'activeTab'
+])
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" 
       x-data="{ darkMode: localStorage.getItem('darkMode') === 'true', toggleTheme() { this.darkMode = !this.darkMode; localStorage.setItem('darkMode', this.darkMode); } }" 
@@ -27,7 +32,7 @@
                 <x-application-logo class="w-8 h-8 fill-current text-gray-500" />
             </div>
             <div class="navbar-center">
-                <span>Mon Feed</span>
+                <span>{{ $title }}</span>
             </div>
             <div class="navbar-end">
                 <label class="swap swap-rotate">
@@ -65,16 +70,16 @@
 
         <!-- Page Navigation -->
         <div class="btm-nav">
-            <button class="text-primary active">
+            <button class="text-primary @if ($activeTab == 1) active @endif">
                 <x-heroicon-o-home class="h-5 w-5" />
             </button>
-            <button class="text-primary">
+            <button class="text-primary @if ($activeTab == 2) active @endif">
                 <x-heroicon-o-user-group class="h-5 w-5" />
             </button>
-            <button class="text-primary">
+            <button class="text-primary @if ($activeTab == 3) active @endif">
                 <x-heroicon-o-calendar class="h-5 w-5" />
             </button>
-            <button class="text-primary">
+            <button class="text-primary @if ($activeTab == 4) active @endif">
                 <x-heroicon-o-chat-bubble-left-right class="h-5 w-5" />
             </button>
         </div>
