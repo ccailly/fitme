@@ -46,6 +46,7 @@ class FeedController extends Controller
             $feed_post->user = User::find($post->user_id);
             $feed_post->date = $post->created_at;
             $feed_post->likes = PostLikes::where('post_id', $post->id)->count();
+            $feed_post->liked = PostLikes::where('post_id', $post->id)->where('user_id', $request->user()->id)->exists();
             $feed_post->comments = [];
 
             foreach (PostComments::where('post_id', $post->id)->get() as $comment) {

@@ -59,7 +59,7 @@
         </div>
 
         <!-- Page Content -->
-        <main class="min-h-screen bg-base-200">
+        <main class="min-h-screen bg-base-200 pt-6 pb-14">
             {{ $slot }}
         </main>
 

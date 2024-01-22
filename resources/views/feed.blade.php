@@ -1,11 +1,17 @@
 <x-app-layout>
     @foreach ($feed_posts as $feed_post)
-        <div class="card bordered bg-base-100 mx-2 my-6">
-            <div class="card-body">
+        <div class="card bordered bg-base-100 mx-2 mb-4">
+            <div class="card-body -m-2">
                 <div class="flex flex-row justify-between">
                     <div class="justify-start items-center card-actions">
                         <img src="{{ $feed_post->user->avatar }}" class="w-10 rounded-full">
-                        <p class="text-xs">{{ $feed_post->user->name }}</p>
+                        <div class="flex flex-col">
+                            <a href="{{ route('user.show', ['user_id' => $feed_post->user->id]) }}" class="text-xs font-extrabold">{{ $feed_post->user->name }}</a>
+                            <div class="flex flex-row gap-1">
+                                <img src="{{ $feed_post->community->image }}" class="w-4 rounded-full">
+                                <a href="{{ route('community.show', ['community_id' => $feed_post->community->id]) }}" class="text-xs">{{ $feed_post->community->name }}</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="flex flex-row justify-end items-center card-actions">
                         <p class="font-extrabold">•</p>
@@ -56,13 +62,13 @@
                 @endif
                 <div class="divider"></div>
                 <div class="justify-start card-actions">
-                    <button class="btn btn-outline btn-accent">
+                    <button class="btn btn-accent" x-data="{ liked: {{ $feed_post->liked ? 'true' : 'false' }}, likes: {{ $feed_post->likes }}, post_id: {{ $feed_post->id }} }" x-on:click="toggleLike" x-bind:class="{ 'btn-outline': !liked }">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
                         </svg>
-                        {{ $feed_post->likes }}
+                        <span x-text="likes"></span>
                     </button>
                     <button class="btn btn-outline btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -76,4 +82,21 @@
             </div>
         </div>
     @endforeach
+    <script>
+        function toggleLike() {
+            axios.post('/like', {
+                csrf_token: '{{ csrf_token() }}',
+                post_id: this.post_id,
+                user_id: {{ auth()->id() }},
+                liked: this.liked
+            })
+            .then(response => {
+                this.liked = response.data.liked;
+                this.likes = response.data.likes;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+        }
+    </script>
 </x-app-layout>
