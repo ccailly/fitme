@@ -72,6 +72,9 @@ class FeedController extends Controller
             array_push($feed, $feed_post);
         }
 
-        return $feed;
+        return view('feed', [
+            'title' => 'Mon Feed',
+            'feed' => $feed
+        ]);
     }
 }

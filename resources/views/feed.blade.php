@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-app-layout title="Mon Feed" activeTab="1">
     @foreach ($feed_posts as $feed_post)
         <div class="card bordered bg-base-100 mx-2 mb-4">
             <div class="card-body -m-2">
