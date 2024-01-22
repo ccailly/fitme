@@ -66,15 +66,13 @@ class FeedController extends Controller
                 $event_obj->date = \Carbon\Carbon::createFromTimestamp(strtotime($event->date_time));
                 $event_obj->location = $event->location;
                 $event_obj->participants = EventParticipants::where('event_id', $event->id)->get()->count();
+                $event_obj->participate = EventParticipants::where('event_id', $event->id)->where('user_id', $request->user()->id)->exists();
                 $feed_post->event = $event_obj;
             }
 
             array_push($feed, $feed_post);
         }
 
-        return view('feed', [
-            'title' => 'Mon Feed',
-            'feed' => $feed
-        ]);
+        return $feed;
     }
 }

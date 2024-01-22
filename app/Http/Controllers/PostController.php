@@ -10,7 +10,6 @@ class PostController extends Controller
     public function toggleLike(Request $request)
     {
 
-        //check csrf token validity
         $request->validate([
             'csrf_token' => 'required|in:' . csrf_token(),
             'post_id' => 'required|integer',

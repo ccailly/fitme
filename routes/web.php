@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostController;
@@ -33,6 +34,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/community/{community_id}', [Community::class, 'show'])->name('community.show');
 
     Route::post('/like', [PostController::class, 'toggleLike']);
+    Route::post('/participate', [EventController::class, 'toggleParticipate']);
 });
 
 require __DIR__.'/auth.php';
