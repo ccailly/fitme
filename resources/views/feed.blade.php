@@ -6,10 +6,12 @@
                     <div class="justify-start items-center card-actions">
                         <img src="{{ $feed_post->user->avatar }}" class="w-10 rounded-full">
                         <div class="flex flex-col">
-                            <a href="{{ route('user.show', ['user_id' => $feed_post->user->id]) }}" class="text-xs font-extrabold">{{ $feed_post->user->name }}</a>
+                            <a href="{{ route('user.show', ['user_id' => $feed_post->user->id]) }}"
+                                class="text-xs font-extrabold">{{ $feed_post->user->name }}</a>
                             <div class="flex flex-row gap-1">
                                 <img src="{{ $feed_post->community->image }}" class="w-4 rounded-full">
-                                <a href="{{ route('community.show', ['community_id' => $feed_post->community->id]) }}" class="text-xs">{{ $feed_post->community->name }}</a>
+                                <a href="{{ route('community.show', ['community_id' => $feed_post->community->id]) }}"
+                                    class="text-xs">{{ $feed_post->community->name }}</a>
                             </div>
                         </div>
                     </div>
@@ -22,7 +24,7 @@
                 @if (isset($feed_post->event))
                     <div class="divider"></div>
                     <div class="card bordered">
-                        <div class="card-body">
+                        <div class="card-body" x-data="{ participate: {{ $feed_post->event->participate ? 'true' : 'false' }}, participants: {{ $feed_post->event->participants }}, event_id: {{ $feed_post->event->id }} }">
                             <p class="text-md font-extrabold">{{ $feed_post->event->name }}</p>
                             <p class="text-xs">{{ $feed_post->event->description }}</p>
                             <div class="flex flex-col justify-between">
@@ -55,7 +57,9 @@
                                 <p class="text-xs w-min" x-text="participants"></p>
                             </div>
                             <div class="justify-end card-actions">
-                                <button class="btn btn-accent" x-data="{ participate: {{ $feed_post->event->participate ? 'true' : 'false' }}, participants: {{ $feed_post->event->participants }}, event_id: {{ $feed_post->event->id }} }" x-on:click="toggleParticipate" x-bind:class="{ 'btn-outline': !participate }" x-text="participate ? 'Je participe !' : 'Participer'">
+                                <button class="btn btn-accent" x-on:click="toggleParticipate"
+                                    x-bind:class="{ 'btn-outline': !participate }"
+                                    x-text="participate ? 'Je participe !' : 'Participer'">
                                     Participer
                                 </button>
                             </div>
@@ -64,7 +68,8 @@
                 @endif
                 <div class="divider"></div>
                 <div class="justify-start card-actions">
-                    <button class="btn btn-accent" x-data="{ liked: {{ $feed_post->liked ? 'true' : 'false' }}, likes: {{ $feed_post->likes }}, post_id: {{ $feed_post->id }} }" x-on:click="toggleLike" x-bind:class="{ 'btn-outline': !liked }">
+                    <button class="btn btn-accent" x-data="{ liked: {{ $feed_post->liked ? 'true' : 'false' }}, likes: {{ $feed_post->likes }}, post_id: {{ $feed_post->id }} }" x-on:click="toggleLike"
+                        x-bind:class="{ 'btn-outline': !liked }">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -87,32 +92,32 @@
     <script>
         function toggleLike() {
             axios.post('/like', {
-                csrf_token: '{{ csrf_token() }}',
-                post_id: this.post_id,
-                liked: this.liked
-            })
-            .then(response => {
-                this.liked = response.data.liked;
-                this.likes = response.data.likes;
-            })
-            .catch(error => {
-                console.error(error);
-            });
+                    csrf_token: '{{ csrf_token() }}',
+                    post_id: this.post_id,
+                    liked: this.liked
+                })
+                .then(response => {
+                    this.liked = response.data.liked;
+                    this.likes = response.data.likes;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         }
 
         function toggleParticipate() {
             axios.post('/participate', {
-                csrf_token: '{{ csrf_token() }}',
-                event_id: this.event_id,
-                participated: this.participate
-            })
-            .then(response => {
-                this.participants = response.data.participants;
-                this.participate = response.data.participated;
-            })
-            .catch(error => {
-                console.error(error);
-            });
+                    csrf_token: '{{ csrf_token() }}',
+                    event_id: this.event_id,
+                    participated: this.participate
+                })
+                .then(response => {
+                    this.participants = response.data.participants;
+                    this.participate = response.data.participated;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
         }
     </script>
 </x-app-layout>
