@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/like', [PostController::class, 'toggleLike']);
     Route::post('/participate', [EventController::class, 'toggleParticipate']);
     Route::get('/getComments', [PostController::class, 'getComments']);
+    Route::post('/addComment', [PostController::class, 'addComment']);
 });
 
 require __DIR__.'/auth.php';
