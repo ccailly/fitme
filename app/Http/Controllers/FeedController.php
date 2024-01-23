@@ -24,11 +24,11 @@ class FeedController extends Controller
         }
 
         $feed_posts = $this->getFeed($request);
-
+        
         return view('feed', [
             'feed_posts' => $feed_posts,
         ]);
-    }
+        }
 
     private function getFeed(Request $request): array
     {

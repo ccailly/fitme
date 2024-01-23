@@ -60,16 +60,28 @@
                                 <button class="btn btn-accent" x-on:click="toggleParticipate"
                                     x-bind:class="{ 'btn-outline': !participate }"
                                     x-text="participate ? 'Je participe !' : 'Participer'">
-                                    Participer
                                 </button>
                             </div>
                         </div>
                     </div>
                 @endif
                 <div class="divider"></div>
-                <div class="justify-start card-actions">
-                    <button class="btn btn-accent" x-data="{ liked: {{ $feed_post->liked ? 'true' : 'false' }}, likes: {{ $feed_post->likes }}, post_id: {{ $feed_post->id }} }" x-on:click="toggleLike"
-                        x-bind:class="{ 'btn-outline': !liked }">
+                <div class="justify-start card-actions" x-data="{
+                    liked: {{ $feed_post->liked ? 'true' : 'false' }},
+                    likes: {{ $feed_post->likes }},
+                    post_id: {{ $feed_post->id }},
+                    comments: [],
+                    getComments: function() {
+                        axios.get('/getComments?post_id=' + this.post_id)
+                            .then(response => {
+                                this.comments = response.data.comments;
+                            })
+                            .catch(error => {
+                                console.error(error);
+                            });
+                    }
+                }">
+                    <button @click="toggleLike" :class="{ 'btn-outline': !liked }" class="btn btn-accent">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -77,14 +89,49 @@
                         </svg>
                         <span x-text="likes"></span>
                     </button>
-                    <button class="btn btn-outline btn-primary">
+
+                    <label for="my_modal_{{ $feed_post->id }}" @click="getComments()"
+                        class="btn btn-outline btn-primary">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="w-6 h-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
                         </svg>
                         {{ count($feed_post->comments) }}
-                    </button>
+                    </label>
+
+                    <input type="checkbox" id="my_modal_{{ $feed_post->id }}" class="modal-toggle" />
+                    <div class="modal" role="dialog">
+                        <div class="modal-box">
+                            <h3 class="font-bold text-lg">Commentaires</h3>
+                            <ul class="py-4">
+                                <template x-for="comment in comments">
+                                    <div class="card bordered bg-base-100 mx-2 mb-4">
+                                        <div class="card-body -m-2">
+                                            <div class="flex flex-col justify-between">
+                                                <div class="flex flex-row justify-between">
+                                                    <div class="justify-start items-center card-actions">
+                                                        <img :src="comment.user.avatar" class="w-6 rounded-full">
+                                                        <div class="flex flex-col">
+                                                            <a :href="'/user/' + comment.user.id"
+                                                                class="text-xs font-extrabold"
+                                                                x-text="comment.user.name"></a>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex flex-row justify-end items-center card-actions">
+                                                        <p class="font-extrabold">•</p>
+                                                        <p class="text-xs" x-text="comment.posted_date"></p>
+                                                    </div>
+                                                </div>
+                                                <p class="mt-1 text-sm" x-text="comment.content"></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </template>
+                            </ul>
+                        </div>
+                        <label class="modal-backdrop" for="my_modal_{{ $feed_post->id }}">Close</label>
+                    </div>
                 </div>
             </div>
         </div>
