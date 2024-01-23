@@ -23,7 +23,7 @@ class CommunityFactory extends Factory
         return [
             'name' => $this->faker->unique()->company(),
             'description' => $this->faker->realText(200),
-            'image' => 'https://source.unsplash.com/400x400/?community',
+            'image' => 'https://source.unsplash.com/400x400/?community-' . $this->faker->company(),
         ];
     }
 }

@@ -56,7 +56,7 @@
                 <button class="btn btn-ghost btn-circle">
                     <div class="avatar">
                         <div class="w-8 rounded-full">
-                            <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                            <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}" />
                         </div>
                     </div>
                 </button>
@@ -64,7 +64,7 @@
         </div>
 
         <!-- Page Content -->
-        <main>
+        <main class="min-h-screen bg-base-200 pt-6 pb-14">
             {{ $slot }}
         </main>
 

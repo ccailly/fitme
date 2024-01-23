@@ -26,7 +26,7 @@ class EventFactory extends Factory
             'description' => $this->faker->realText(100),
             'user_id' => User::inRandomOrder()->first()->id,
             'community_id' => Community::inRandomOrder()->first()->id,
-            'date_time' => $this->faker->dateTimeBetween('now', '+1 years'),
+            'date_time' => $this->faker->dateTimeBetween('now', '+1 year'),
             'location' => $this->faker->address(),
             'max_participants' => $this->faker->numberBetween(10, 100),
         ];

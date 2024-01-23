@@ -18,7 +18,7 @@ return new class extends Migration
             $table->longText('description')->nullable()->default(null);
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('community_id')->constrained('communities');
-            $table->dateTime('date_time');
+            $table->timestamp('date_time');
             $table->string('location')->nullable()->default(null);
             $table->integer('max_participants')->nullable()->default(null);
             $table->timestamps();

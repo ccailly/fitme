@@ -18,8 +18,6 @@ class Post extends Model
         'content',
         'community_id',
         'user_id',
-        'date',
-        "is_event",
     ];
         
 }
