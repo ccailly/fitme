@@ -49,6 +49,8 @@ echo "⬇️ Laravel down"
     
     npm install
 
+    npm ci
+
     echo "🏗️ Compiling assets"
     
     npm run build
