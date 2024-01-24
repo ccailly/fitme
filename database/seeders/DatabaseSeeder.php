@@ -25,23 +25,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(50)->create();
+        User::factory(100)->create();
 
-        Sport::factory(10)->create();
+        Sport::factory(20)->create();
 
-        UserSports::factory(20)->create();
+        UserSports::factory(150)->create();
 
-        Community::factory(10)->create();
-        CommunitySports::factory(15)->create();
-        CommunityMembers::factory(50)->create();
+        Community::factory(50)->create();
+        CommunitySports::factory(70)->create();
+        CommunityMembers::factory(300)->create();
 
-        Event::factory(10)->create();
-        Post::factory(30)->create();
+        Event::factory(150)->create();
+        Post::factory(300)->create();
 
-        EventPosts::factory(10)->create();
-        EventParticipants::factory(30)->create();
+        EventPosts::factory(200)->create();
+        EventParticipants::factory(300)->create();
 
-        PostLikes::factory(100)->create();
-        PostComments::factory(30)->create();
+        PostLikes::factory(1000)->create();
+        PostComments::factory(50)->create();
     }
 }
