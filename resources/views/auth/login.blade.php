@@ -9,7 +9,7 @@
         <div>
             <x-input-label for="email" :value="__('Email')" class="text-base-content" />
             <x-text-input id="email" class="text-base-content block mt-1 w-full" type="email" name="email"
-                :value="old('email')" required autofocus autocomplete="username" />
+                :value="request()->get('email', old('email'))" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
