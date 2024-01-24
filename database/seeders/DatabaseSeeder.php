@@ -17,6 +17,7 @@ use App\Models\Sport;
 use App\Models\User;
 use App\Models\UserSports;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -25,23 +26,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory(100)->create();
+        User::factory(50)->create();
 
         Sport::factory(20)->create();
 
-        UserSports::factory(150)->create();
+        UserSports::factory(75)->create();
 
-        Community::factory(50)->create();
-        CommunitySports::factory(70)->create();
-        CommunityMembers::factory(300)->create();
+        Community::factory(25)->create();
+        CommunitySports::factory(35)->create();
+        CommunityMembers::factory(150)->create();
 
-        Event::factory(150)->create();
-        Post::factory(300)->create();
+        Event::factory(75)->create();
+        Post::factory(150)->create();
 
-        EventPosts::factory(200)->create();
-        EventParticipants::factory(300)->create();
+        EventPosts::factory(100)->create();
+        EventParticipants::factory(150)->create();
 
-        PostLikes::factory(1000)->create();
-        PostComments::factory(50)->create();
+        PostLikes::factory(500)->create();
+        PostComments::factory(75)->create();
     }
 }

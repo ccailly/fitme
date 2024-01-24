@@ -17,10 +17,51 @@ class SportFactory extends Factory
      */
     public function definition(): array
     {
-        
+
         $this->faker->addProvider(new fr_FR\Text($this->faker));
 
-        $sports = ['Football', 'Basketball', 'Tennis', 'Rugby', 'Cricket', 'Baseball', 'Hockey', 'Volleyball', 'Golf', 'Boxing'];
+        $sports = [
+            'Football',
+            'Basketball',
+            'Tennis',
+            'Rugby',
+            'Cricket',
+            'Baseball',
+            'Hockey',
+            'Volleyball',
+            'Golf',
+            'Boxe',
+            'MMA',
+            'Badminton',
+            'Tennis de table',
+            'Handball',
+            'Athlétisme',
+            'Natation',
+            'Cyclisme',
+            'Escalade',
+            'Ski',
+            'Snowboard',
+            'Surf',
+            'Skateboard',
+            'Roller',
+            'Yoga',
+            'Fitness',
+            'Danse',
+            'Gymnastique',
+            'Musculation',
+            'Marche',
+            'Randonnée',
+            'Course à pied',
+            'Equitation',
+            'Plongée',
+            'Voile',
+            'Stand up paddle',
+            'Kitesurf',
+            'Windsurf',
+            'Canoë-kayak',
+            'Canyoning',
+            'Judo',
+        ];
 
         return [
             'name' => $this->faker->unique()->randomElement($sports),

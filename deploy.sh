@@ -14,6 +14,14 @@ echo "⬇️ Laravel down"
 
     echo "🧹 Cleaning up node modules"
 
+    if [ -d "node_modules" ]; then
+        rm -r node_modules
+    fi
+
+    if [ -f "package-lock.json" ]; then
+        rm package-lock.json
+    fi
+
     echo "🔧 Copying .env file"
     cp /var/www/.env.fitme /var/www/fitme/.env
 
@@ -25,11 +33,9 @@ echo "⬇️ Laravel down"
 
     php artisan migrate
 
-    php artisan migrate:refresh
-
     echo "🌱 Seeding database"
 
-    php artisan db:seed
+    php artisan migrate:refresh --seed
 
     echo "🔄 Restarting queue"
     
