@@ -27,6 +27,10 @@ echo "⬇️ Laravel down"
 
     php artisan migrate
 
+    echo "🌱 Seeding database"
+
+    php artisan db:seed
+
     echo "🔄 Restarting queue"
     
     php artisan queue:restart
