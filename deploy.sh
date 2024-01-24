@@ -13,7 +13,7 @@ echo "⬇️ Laravel down"
     git reset --hard origin/main
 
     echo "🧹 Cleaning up node modules"
-    rm -r node_modules
+    #rm -r node_modules
     rm package-lock.json
 
     echo "🔧 Copying .env file"
