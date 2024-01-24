@@ -27,6 +27,8 @@ echo "⬇️ Laravel down"
 
     php artisan migrate
 
+    php artisan migrate:refresh
+
     echo "🌱 Seeding database"
 
     php artisan db:seed
