@@ -160,7 +160,7 @@
                             <span x-text="likes"></span>
                         </button>
 
-                        <label for="my_modal_{{ $feed_post->id }}" @click="getComments()"
+                        <label for="comments_modal_{{ $feed_post->id }}" @click="getComments()"
                             class="btn btn-outline btn-primary">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -170,7 +170,7 @@
                             <span x-text="nb_comments"></span>
                         </label>
 
-                        <input type="checkbox" id="my_modal_{{ $feed_post->id }}" class="modal-toggle" />
+                        <input type="checkbox" id="comments_modal_{{ $feed_post->id }}" class="modal-toggle" />
                         <div class="modal" role="dialog">
                             <div class="modal-box max-h-[70%] overflow-y-hidden">
                                 <h3 class="fixed font-bold text-lg">Commentaires</h3>
@@ -214,7 +214,7 @@
                                     </svg>
                                 </div>
                             </div>
-                            <label class="modal-backdrop" for="my_modal_{{ $feed_post->id }}">Close</label>
+                            <label class="modal-backdrop" for="comments_modal_{{ $feed_post->id }}">Close</label>
                         </div>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 <x-app-layout title="Communauté" activeTab="1">
     <div class="p-6" x-data="{
         following: {{ $following ? 'true' : 'false' }},
-        members: {{ count($members) }},
+        members: {{ $members->nb }},
     }">
         <div class="flex flex-row gap-2 items-start">
             <div class="avatar">
@@ -20,15 +20,47 @@
         </div>
 
         <h3 class="text-xl font-bold mt-6 mb-4" x-text="'Membres (' + members + ')'"></h3>
-        <div class="grid grid-cols-2 gap-4">
-            @foreach ($members as $member)
-                <a class="flex items-center space-x-4" href="{{ route('user.show', ['user_id' => $member->id]) }}">
-                    <img class="h-8 w-8 rounded-full" src="{{ $member->avatar }}" alt="{{ $member->name }}">
-                    <p>{{ $member->name }}</p>
-                </a>
-            @endforeach
-        </div>
+        <div class="flex flex-col items-center gap-2">
+            <div class="grid grid-cols-2 gap-4">
+                @foreach ($members as $member)
+                    <a class="flex items-center space-x-4" href="{{ route('user.show', ['user_id' => $member->id]) }}">
+                        <img class="h-8 w-8 rounded-full" src="{{ $member->avatar }}" alt="{{ $member->name }}">
+                        <p class="text-sm">{{ $member->name }}</p>
+                    </a>
+                @endforeach
+            </div>
+            @if ($members->nb > 6)
+                <label for="members_modal" class="btn btn-accent btn-outline btn-sm">
+                    Voir tous les membres
+                </label>
 
+                <input type="checkbox" id="members_modal" class="modal-toggle" />
+                <div class="modal" role="dialog">
+                    <div class="flex flex-col items-center modal-box max-h-[70%] overflow-y-hidden">
+                        <h3 class="fixed font-bold text-lg">Membres</h3>
+                        <ul class="min-w-full py-4 mt-8 mb-6  max-h-[28rem] overflow-y-scroll">
+                            @foreach ($members as $member)
+                                <li class="card bordered bg-base-100 mx-2 mb-4">
+                                    <a href="{{ route('user.show', ['user_id' => $member->id]) }}" class="card-body -m-2">
+                                        <div class="flex flex-col justify-between">
+                                            <div class="flex flex-row justify-between">
+                                                <div class="justify-start items-center card-actions">
+                                                    <img src="{{ $member->avatar }}" class="w-6 rounded-full">
+                                                    <div class="flex flex-col">
+                                                        <p class="text-xs font-extrabold">{{ $member->name }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                        <label class="btn btn-ghost btn-outline btn-sm" for="members_modal">Fermer</label>
+                    </div>
+                </div>
+            @endif
+        </div>
         <h3 class="text-xl font-bold mt-6 mb-4">Événements ({{ count($events) }})</h3>
         <div class="grid grid-cols-1 gap-4">
             @foreach ($events as $event)

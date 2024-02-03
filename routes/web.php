@@ -40,6 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/addComment', [PostController::class, 'addComment']);
 
     Route::post('/follow', [CommunityController::class, 'toggleFollow']);
+    Route::post('/getAllMembers', [CommunityController::class, 'getAllMembers']);
 });
 
 require __DIR__.'/auth.php';

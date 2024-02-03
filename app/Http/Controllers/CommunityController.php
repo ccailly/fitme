@@ -19,7 +19,7 @@ class CommunityController extends Controller
     {
         $community = Community::findOrFail($community_id);
         $members_ids = CommunityMembers::where('community_id', $community_id)->get('user_id');
-        $members = User::whereIn('id', $members_ids)->get();
+        $members = User::whereIn('id', $members_ids)->take(6)->get();
         $post_ids = Post::where('community_id', $community_id)->get('id');
         $events = Event::whereIn('id', EventPosts::whereIn('post_id', $post_ids)->get('event_id'))->orderBy('date_time', 'asc')->get();
         $following = CommunityMembers::where('user_id', $request->user()->id)->where('community_id', $community_id)->exists();
@@ -30,12 +30,23 @@ class CommunityController extends Controller
             $event->participants = EventParticipants::where('event_id', $event->id)->get()->count();
             $event->participate = EventParticipants::where('event_id', $event->id)->where('user_id', $request->user()->id)->exists();
         }
+
+        $members->nb = count($members_ids);
+
         return view('community', [
             'community' => $community,
             'members' => $members,
             'events' => $events,
             'following' => $following,
         ]);
+    }
+
+    public function getAllMembers(Request $request, $community_id): JsonResponse
+    {
+        $members_ids = CommunityMembers::where('community_id', $community_id)->get('user_id');
+        $members = User::whereIn('id', $members_ids)->get();
+
+        return response()->json($members);
     }
 
     public function toggleFollow(Request $request): JsonResponse
