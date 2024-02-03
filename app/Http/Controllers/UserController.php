@@ -7,18 +7,23 @@ use App\Models\CommunityMembers;
 use App\Models\Sport;
 use App\Models\User;
 use App\Models\UserSports;
+use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
-    public function show($user_id): View
+    public function show(Request $request, $user_id): View
     {
         $user = User::findOrFail($user_id);
         $communities_ids = CommunityMembers::where('user_id', $user_id)->get('community_id');
         $communities = Community::whereIn('id', $communities_ids)->get();
         $sports_ids = UserSports::where('user_id', $user_id)->get('sport_id');
         $sports = Sport::whereIn('id', $sports_ids)->get();
+
+        foreach ($communities as $community) {
+            $community->following = CommunityMembers::where('user_id', $request->user()->id)->where('community_id', $community->id)->exists();
+        }
 
         return view('user', [
             'user' => $user,

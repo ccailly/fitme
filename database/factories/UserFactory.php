@@ -27,12 +27,14 @@ class UserFactory extends Factory
         
         $this->faker->addProvider(new fr_FR\Person($this->faker));
 
+        $name = fake()->name();
+
         return [
-            'name' => fake()->name(),
+            'name' => $name,
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'avatar' => fake()->imageUrl(400, 400, 'people'),
+            'avatar' => 'https://source.unsplash.com/400x400/?people' . $name,
             'remember_token' => Str::random(10),
         ];
     }

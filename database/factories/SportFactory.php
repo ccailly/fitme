@@ -63,10 +63,12 @@ class SportFactory extends Factory
             'Judo',
         ];
 
+        $sport = $this->faker->unique()->randomElement($sports);
+
         return [
-            'name' => $this->faker->unique()->randomElement($sports),
+            'name' => $sport,
             'description' => $this->faker->realText(100),
-            'image' => 'https://source.unsplash.com/400x400/?' . $this->faker->randomElement($sports),
+            'image' => 'https://source.unsplash.com/400x400/?' . $sport,
         ];
     }
 }

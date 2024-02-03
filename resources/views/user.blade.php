@@ -25,14 +25,31 @@
             <p class="text-xl font-bold">Communautés ({{ count($communities) }})</p>
             <div class="flex flex-col w-full gap-3">
                 @foreach ($communities as $community)
-                    <div class="flex flex-row items-center w-full justify-between gap-2">
-                        <div class="flex flex-row items-center gap-2">
+                    <div class="flex flex-row items-center w-full justify-between gap-2" x-data="{
+                        following: {{ $community->following ? 'true' : 'false' }},
+                        community_id: {{ $community->id }},
+                        toggleFollow: function() {
+                            axios.post('/follow', {
+                                    csrf_token: '{{ csrf_token() }}',
+                                    community_id: this.community_id,
+                                    following: this.following
+                                })
+                                .then(response => {
+                                    this.following = response.data.following;
+                                })
+                                .catch(error => {
+                                    console.error(error);
+                                });
+                        }
+                    }">
+                        <a href="{{ route('community.show', ['community_id' => $community->id]) }}" class="flex flex-row items-center gap-2">
                             <img class="w-8 h-8 rounded-full" src="{{ $community->image }}" />
                             <p class="text-sm">{{ $community->name }}</p>
-                        </div>
-                        <btn class="btn btn-ghost btn-outline">
-                            Suivre
-                        </btn>
+                        </a>
+                        <button class="btn btn-accent" x-on:click="toggleFollow"
+                            x-bind:class="{ 'btn-outline': !following }"
+                            x-text="following ? 'Suivi' : 'Suivre'">
+                        </button>
                     </div>
                 @endforeach
             </div>
