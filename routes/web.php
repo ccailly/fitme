@@ -38,6 +38,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/participate', [EventController::class, 'toggleParticipate']);
     Route::get('/getComments', [PostController::class, 'getComments']);
     Route::post('/addComment', [PostController::class, 'addComment']);
+
+    Route::post('/follow', [CommunityController::class, 'toggleFollow']);
 });
 
 require __DIR__.'/auth.php';

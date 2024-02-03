@@ -1,6 +1,9 @@
 <x-app-layout title="Communauté" activeTab="1">
-    <div class="p-6">
-        <div class="flex flex-row gap-2">
+    <div class="p-6" x-data="{
+        following: {{ $following ? 'true' : 'false' }},
+        members: {{ count($members) }},
+    }">
+        <div class="flex flex-row gap-2 items-start">
             <div class="avatar">
                 <div class="w-32 mask mask-squircle">
                     <img src="{{ $community->image }}" alt="{{ $community->name }}">
@@ -9,10 +12,14 @@
             <div class="flex flex-col gap-2">
                 <h2 class="text-2xl font-extrabold">{{ $community->name }}</h2>
                 <p class="text-xs">{{ $community->description }}</p>
+                <button class="btn btn-primary" x-on:click="toggleFollow"
+                    x-bind:class="{ 'btn-outline': !following }"
+                    x-text="following ? 'Suivi' : 'Suivre'">
+                </button>
             </div>
         </div>
 
-        <h3 class="text-xl font-bold mt-6 mb-4">Membres ({{ count($members) }})</h3>
+        <h3 class="text-xl font-bold mt-6 mb-4" x-text="'Membres (' + members + ')'"></h3>
         <div class="grid grid-cols-2 gap-4">
             @foreach ($members as $member)
                 <a class="flex items-center space-x-4" href="{{ route('user.show', ['user_id' => $member->id]) }}">
@@ -31,7 +38,7 @@
                     participants: '{{ $event->participants }}',
                 }">
                     <h4 class="text-lg font-bold">{{ $event->name }}</h4>
-                    <div class="flex flex-col gap-1">
+                    <div class="flex flex-col gap-2">
                         <div>
                             <p class="text-xs">{{ $event->description }}</p>
                         </div>
@@ -73,7 +80,7 @@
                             </svg>
                             <p x-text="participants"></p>
                         </div>
-                        <button class="btn btn-primary" x-on:click="toggleParticipate"
+                        <button class="btn btn-secondary" x-on:click="toggleParticipate"
                             x-bind:class="{ 'btn-outline': !participate }"
                             x-text="participate ? 'Je participe !' : 'Participer'">
                         </button>
@@ -92,6 +99,20 @@
                 .then(response => {
                     this.participants = response.data.participants;
                     this.participate = response.data.participated;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+        function toggleFollow() {
+            axios.post('/follow', {
+                    csrf_token: '{{ csrf_token() }}',
+                    community_id: {{ $community->id }},
+                    following: this.following
+                })
+                .then(response => {
+                    this.following = response.data.following;
+                    this.members = response.data.members;
                 })
                 .catch(error => {
                     console.error(error);
