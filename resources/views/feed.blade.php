@@ -253,5 +253,5 @@
         }
     </script>
 
-    <x-post-modal />
+    <x-post-modal :communities="$communities" :events="$events" />
 </x-app-layout>

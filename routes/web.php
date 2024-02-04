@@ -19,14 +19,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [FeedController::class, 'index'])->name('feed');
-Route::get('/getMostConnectedUser', [UserController::class, 'getMostConnectedUser']);
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
+    Route::get('/', [FeedController::class, 'index'])->name('feed');
+    Route::post('/', [FeedController::class, 'addPost'])->name('feed.post');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -42,5 +38,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/follow', [CommunityController::class, 'toggleFollow']);
     Route::post('/getAllMembers', [CommunityController::class, 'getAllMembers']);
 });
+
+Route::get('/getMostConnectedUser', [UserController::class, 'getMostConnectedUser']);
 
 require __DIR__.'/auth.php';
