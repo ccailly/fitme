@@ -19,4 +19,20 @@ class Community extends Model
         'description',
         'image',
     ];
+
+    /**
+     * Get the posts for the community.
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class);
+    }
+
+    /**
+     * Get the events for the community.
+     */
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
 }

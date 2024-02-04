@@ -171,7 +171,7 @@
                         </label>
 
                         <input type="checkbox" id="comments_modal_{{ $feed_post->id }}" class="modal-toggle" />
-                        <div class="modal" role="dialog">
+                        <div class="modal modal-bottom sm:modal-middle" role="dialog">
                             <div class="modal-box max-h-[70%] overflow-y-hidden">
                                 <h3 class="fixed font-bold text-lg">Commentaires</h3>
                                 <ul class="py-4 mt-8 mb-6  max-h-[28rem] overflow-y-scroll">
@@ -252,4 +252,6 @@
                 });
         }
     </script>
+
+    <x-post-modal :communities="$communities" :events="$events" />
 </x-app-layout>
