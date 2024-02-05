@@ -12,15 +12,26 @@
             <div class="flex flex-col gap-2">
                 <h2 class="text-2xl font-extrabold">{{ $community->name }}</h2>
                 <p class="text-xs">{{ $community->description }}</p>
-                <button class="btn btn-primary" x-on:click="toggleFollow"
-                    x-bind:class="{ 'btn-outline': !following }"
+                <button class="btn btn-primary" x-on:click="toggleFollow" x-bind:class="{ 'btn-outline': !following }"
                     x-text="following ? 'Suivi' : 'Suivre'">
                 </button>
             </div>
         </div>
 
         <h3 class="text-xl font-bold mt-6 mb-4" x-text="'Membres (' + members + ')'"></h3>
-        <div class="flex flex-col items-center gap-2">
+        <div class="flex flex-col items-center gap-2" @click.away="open = false" x-data="{
+            allMembers: [],
+            open: false,
+            fetchMembers() {
+                axios.get('/getAllMembers/{{ $community->id }}')
+                    .then(response => {
+                        this.allMembers = response.data;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        }">
             <div class="grid grid-cols-2 gap-4">
                 @foreach ($members as $member)
                     <a class="flex items-center space-x-4" href="{{ route('user.show', ['user_id' => $member->id]) }}">
@@ -30,33 +41,34 @@
                 @endforeach
             </div>
             @if ($members->nb > 6)
-                <label for="members_modal" class="btn btn-accent btn-outline btn-sm">
+                <label @click="fetchMembers()" for="modal_members" class="btn btn-accent btn-outline btn-sm mt-3">
                     Voir tous les membres
                 </label>
 
-                <input type="checkbox" id="members_modal" class="modal-toggle" />
+                <input type="checkbox" id="modal_members" class="modal-toggle" />
                 <div class="modal" role="dialog">
                     <div class="flex flex-col items-center modal-box max-h-[70%] overflow-y-hidden">
                         <h3 class="fixed font-bold text-lg">Membres</h3>
                         <ul class="min-w-full py-4 mt-8 mb-6  max-h-[28rem] overflow-y-scroll">
-                            @foreach ($members as $member)
+                            <template x-for="member in allMembers" :key="member.id">
                                 <li class="card bordered bg-base-100 mx-2 mb-4">
-                                    <a href="{{ route('user.show', ['user_id' => $member->id]) }}" class="card-body -m-2">
+                                    <a href="{{ route('user.show', ['user_id' => $member->id]) }}"
+                                        class="card-body -m-2">
                                         <div class="flex flex-col justify-between">
                                             <div class="flex flex-row justify-between">
                                                 <div class="justify-start items-center card-actions">
-                                                    <img src="{{ $member->avatar }}" class="w-6 rounded-full">
+                                                    <img :src="member.avatar" class="w-6 rounded-full">
                                                     <div class="flex flex-col">
-                                                        <p class="text-xs font-extrabold">{{ $member->name }}</p>
+                                                        <p class="text-xs font-extrabold" x-text="member.name"></p>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </a>
                                 </li>
-                            @endforeach
+                            </template>
                         </ul>
-                        <label class="btn btn-ghost btn-outline btn-sm" for="members_modal">Fermer</label>
+                        <label for="modal_members" class="btn btn-ghost btn-outline btn-sm">Fermer</label>
                     </div>
                 </div>
             @endif
@@ -66,7 +78,7 @@
             @foreach ($events as $event)
                 <div class="flex flex-col gap-2 p-4 border border-dashed rounded-lg" x-data="{
                     event_id: {{ $event->id }},
-                    participate: {{ $event->participate ? 'true' : 'false'}},
+                    participate: {{ $event->participate ? 'true' : 'false' }},
                     participants: '{{ $event->participants }}',
                 }">
                     <h4 class="text-lg font-bold">{{ $event->name }}</h4>
@@ -80,7 +92,8 @@
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
                             </svg>
-                            <a class="flex flex-row gap-1" href="{{ route('user.show', ['user_id' => $event->owner->id]) }}">
+                            <a class="flex flex-row gap-1"
+                                href="{{ route('user.show', ['user_id' => $event->owner->id]) }}">
                                 <img class="h-6 w-6 rounded-full" src="{{ $event->owner->avatar }}"</img>
                                 {{ $event->owner->name }}
                             </a>
@@ -136,6 +149,7 @@
                     console.error(error);
                 });
         }
+
         function toggleFollow() {
             axios.post('/follow', {
                     csrf_token: '{{ csrf_token() }}',

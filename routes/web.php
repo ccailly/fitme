@@ -36,7 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/addComment', [PostController::class, 'addComment']);
 
     Route::post('/follow', [CommunityController::class, 'toggleFollow']);
-    Route::post('/getAllMembers', [CommunityController::class, 'getAllMembers']);
+    Route::get('/getAllMembers/{community_id}', [CommunityController::class, 'getAllMembers']);
 });
 
 Route::get('/getMostConnectedUser', [UserController::class, 'getMostConnectedUser']);

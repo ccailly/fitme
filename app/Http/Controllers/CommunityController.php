@@ -41,7 +41,7 @@ class CommunityController extends Controller
         ]);
     }
 
-    public function getAllMembers(Request $request, $community_id): JsonResponse
+    public function getAllMembers($community_id): JsonResponse
     {
         $members_ids = CommunityMembers::where('community_id', $community_id)->get('user_id');
         $members = User::whereIn('id', $members_ids)->get();
