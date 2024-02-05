@@ -15,12 +15,12 @@
         <form method="post" action="{{ route('feed.post') }}" x-data="{ include_event: false, event_id: -1 }">
             @csrf
             <!-- Select community -->
-            <div class="mb-4">
+            <div class="mb-4" x-data="{ selectedCommunity: null }">
                 <label class="form-control w-full">
                     <div class="label">
                         <span class="label-text">Sélectionner la communauté</span>
                     </div>
-                    <select name="community_id" class="select select-bordered">
+                    <select name="community_id" class="select select-bordered" x-model="selectedCommunity" x-on:change="updateEventsOptions()">
                         @foreach ($communities as $community)
                             <option value="{{ $community->id }}">{{ $community->name }}</option>
                         @endforeach
@@ -58,9 +58,6 @@
                         <select name="event_id" class="select select-bordered" x-model="event_id">
                             <option value="-1" disabled>Sélectionner un évènement</option>
                             <option value="0">Nouvel évènement</option>
-                            @foreach ($events[1] as $event)
-                                <option value="{{ $event->id }}">{{ $event->name }}</option>
-                            @endforeach
                         </select>
                     </label>
                 </div>
@@ -131,4 +128,41 @@
     <form method="dialog" class="modal-backdrop">
         <button>Annuler</button>
     </form>
+
+    <script>
+        function updateEventsOptions() {
+            // Get the selected community ID
+            const selectedCommunity = this.selectedCommunity;
+
+            // Fetch events options based on the selected community ID
+            const eventsOptions = @json($events);
+
+            // Update the events dropdown options
+            const eventsDropdown = document.querySelector('[name="event_id"]');
+            eventsDropdown.innerHTML = '';
+
+            // Add the default options
+            const defaultOption1 = document.createElement('option');
+            defaultOption1.value = "-1";
+            defaultOption1.textContent = "Sélectionner un évènement";
+            eventsDropdown.appendChild(defaultOption1);
+
+            const defaultOption2 = document.createElement('option');
+            defaultOption2.value = "0";
+            defaultOption2.textContent = "Nouvel évènement";
+            eventsDropdown.appendChild(defaultOption2);
+
+            // Add the events options based on the selected community
+            eventsOptions[selectedCommunity].forEach(event => {
+                const option = document.createElement('option');
+                option.value = event.id;
+                option.textContent = event.name;
+                eventsDropdown.appendChild(option);
+            });
+        }
+
+        document.addEventListener('alpine:init', () => {
+            Alpine.data('updateEventsOptions', updateEventsOptions);
+        });
+    </script>
 </dialog>
