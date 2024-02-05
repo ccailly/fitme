@@ -15,12 +15,12 @@
         <form method="post" action="{{ route('feed.post') }}" x-data="{ include_event: false, event_id: -1 }">
             @csrf
             <!-- Select community -->
-            <div class="mb-4" x-data="{ selectedCommunity: null }">
+            <div class="mb-4" x-data="{ selectedCommunity: '{{ $communities[0]->id ?? -1 }}' }" x-init="updateEventsOptions(selectedCommunity)">
                 <label class="form-control w-full">
                     <div class="label">
                         <span class="label-text">Sélectionner la communauté</span>
                     </div>
-                    <select name="community_id" class="select select-bordered" x-model="selectedCommunity" x-on:change="updateEventsOptions()">
+                    <select name="community_id" class="select select-bordered" x-model="selectedCommunity" x-on:change="updateEventsOptions(selectedCommunity)">
                         @foreach ($communities as $community)
                             <option value="{{ $community->id }}">{{ $community->name }}</option>
                         @endforeach
@@ -42,7 +42,7 @@
             <div class="mb-4">
                 <div class="form-control">
                     <label class="label cursor-pointer">
-                        <span class="label-text">Programmer un évènement</span>
+                        <span class="label-text">Inclure un évènement</span>
                         <input name="is_event" type="checkbox" class="toggle" x-model="include_event" />
                     </label>
                 </div>
@@ -130,9 +130,11 @@
     </form>
 
     <script>
-        function updateEventsOptions() {
-            // Get the selected community ID
-            const selectedCommunity = this.selectedCommunity;
+        function updateEventsOptions(selectedCommunity) {
+
+            if (selectedCommunity === '-1') {
+                return;
+            }
 
             // Fetch events options based on the selected community ID
             const eventsOptions = @json($events);
@@ -160,9 +162,5 @@
                 eventsDropdown.appendChild(option);
             });
         }
-
-        document.addEventListener('alpine:init', () => {
-            Alpine.data('updateEventsOptions', updateEventsOptions);
-        });
     </script>
 </dialog>

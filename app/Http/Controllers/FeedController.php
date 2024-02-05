@@ -17,7 +17,7 @@ use Illuminate\View\View;
 
 class FeedController extends Controller
 {
-    public function index(Request $request): View | \Illuminate\Http\RedirectResponse
+    public function index(Request $request): View | RedirectResponse
     {
         $feed_posts = $this->getFeed($request);
 
@@ -87,12 +87,12 @@ class FeedController extends Controller
             'community_id' => 'required|integer|exists:communities,id',
             'content' => 'required|string|max:255',
             'is_event' => 'sometimes',
-            'event_id' => 'required_if:is_event,on|nullable|integer',
-            'event_name' => 'required_if:is_event,on|nullable|string|max:30',
-            'event_description' => 'required_if:is_event,on|nullable|string|max:255',
-            'event_date_time' => 'required_if:is_event,on|nullable|date',
-            'event_location' => 'required_if:is_event,on|nullable|string|max:255',
-            'event_max_participants' => 'required_if:is_event,on|nullable|integer|min:1',
+            'event_id' => 'required_if:is_event,on|integer|min:0',
+            'event_name' => 'required_if:event_id,0|nullable|string|max:30',
+            'event_description' => 'required_if:event_id,0|nullable|string|max:255',
+            'event_date_time' => 'required_if:event_id,0|nullable|date',
+            'event_location' => 'required_if:event_id,0|nullable|string|max:255',
+            'event_max_participants' => 'required_if:event_id,0|nullable|integer|min:1',
         ]);
 
         $post = Post::create([
