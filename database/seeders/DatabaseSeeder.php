@@ -40,9 +40,9 @@ class DatabaseSeeder extends Seeder
         Post::factory(150)->create();
 
         EventPosts::factory(100)->create();
-        EventParticipants::factory(150)->create();
+        EventParticipants::factory(300)->create();
 
-        PostLikes::factory(500)->create();
-        PostComments::factory(75)->create();
+        PostLikes::factory(3000)->create();
+        PostComments::factory(1500)->create();
     }
 }
