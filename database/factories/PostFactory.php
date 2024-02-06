@@ -19,9 +19,12 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $rand_image_width = rand(400, 800);
+        $rand_image_height = rand(400, 800);
         $this->faker->addProvider(new fr_FR\Text($this->faker));
         return [
             'content' => $this->faker->realText(100),
+            'image' => 'https://source.unsplash.com/' . $rand_image_width . 'x' . $rand_image_height . '/?sport-event',
             'community_id' => Community::inRandomOrder()->first()->id,
             'user_id' => User::inRandomOrder()->first()->id,
         ];

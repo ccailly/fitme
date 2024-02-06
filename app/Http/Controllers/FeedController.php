@@ -47,6 +47,7 @@ class FeedController extends Controller
             $feed_post = new \stdClass();
             $feed_post->id = $post->id;
             $feed_post->content = $post->content;
+            $feed_post->image = $post->image;
             $feed_post->community = Community::find($post->community_id);
             $feed_post->user = User::find($post->user_id);
             $feed_post->date = $post->created_at;
@@ -87,8 +88,9 @@ class FeedController extends Controller
         $request->validate([
             'community_id' => 'required|integer|exists:communities,id',
             'content' => 'required|string|max:255',
+            'image' => 'sometimes|image|mimes:jpeg,png,jpg,svg|max:2048|nullable',
             'is_event' => 'sometimes',
-            'event_id' => 'required_if:is_event,on|integer|min:0',
+            'event_id' => 'required_if:is_event,on|integer|min:-1',
             'event_name' => 'required_if:event_id,0|nullable|string|max:30',
             'event_description' => 'required_if:event_id,0|nullable|string|max:255',
             'event_date_time' => 'required_if:event_id,0|nullable|date',
@@ -96,10 +98,20 @@ class FeedController extends Controller
             'event_max_participants' => 'required_if:event_id,0|nullable|integer|min:1',
         ]);
 
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imageName = time().'.'.$request->image->extension();
+
+            // Public Folder
+            $request->image->move(public_path('images'), $imageName);
+            $imagePath = '/images/' . $imageName;
+        }
+
         $post = Post::create([
             'user_id' => $request->user()->id,
             'community_id' => $request->input('community_id'),
             'content' => $request->input('content'),
+            'image' => $imagePath,
             'is_event' => (bool) $request->input('is_event', false),
         ]);
 

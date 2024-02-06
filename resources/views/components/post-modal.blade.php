@@ -12,7 +12,7 @@
     <div class="modal-box">
         <h3 class="font-bold text-lg">Ajouter une publication</h3>
 
-        <form method="post" action="{{ route('feed.post') }}" x-data="{ include_event: false, event_id: -1 }">
+        <form method="post" action="{{ route('feed.post') }}" x-data="{ include_event: false, event_id: -1 }" enctype="multipart/form-data">
             @csrf
             <!-- Select community -->
             <div class="mb-4" x-data="{ selectedCommunity: '{{ $communities[0]->id ?? -1 }}' }" x-init="updateEventsOptions(selectedCommunity)">
@@ -29,13 +29,23 @@
             </div>
 
             <!-- Post content -->
-            <div class="mb-4">
-                <label class="form-control">
+            <div class="mb-4" x-data="{ image: null }">
+                <label class="form-control relative">
                     <div class="label">
                         <span class="label-text">Contenu</span>
                     </div>
                     <textarea name="content" class="textarea textarea-bordered h-24" placeholder="Contenu du post"></textarea>
+                    <input type="file" name="image" class="hidden" @change="image = $event.target.files[0]" x-ref="fileInput">
+                    <button type="button" class="btn btn-square btn-sm btn-outline absolute bottom-2 right-2" @click="$refs.fileInput.click()">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+                        </svg>
+                    </button>
                 </label>
+
+                <div class="mt-2" x-show="image instanceof File">
+                    <img x-bind:src="image instanceof File ? URL.createObjectURL(image) : ''" class="max-h-16 max-w-16 object-cover">
+                </div>
             </div>
 
             <!-- Post include an event -->

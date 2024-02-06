@@ -36,8 +36,8 @@ class DatabaseSeeder extends Seeder
         CommunitySports::factory(35)->create();
         CommunityMembers::factory(150)->create();
 
-        Event::factory(75)->create();
-        Post::factory(150)->create();
+        Event::factory(30)->create();
+        Post::factory(75)->create();
 
         EventPosts::factory(100)->create();
         EventParticipants::factory(150)->create();
