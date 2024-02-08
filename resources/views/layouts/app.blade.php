@@ -56,7 +56,16 @@
                 <button class="btn btn-ghost btn-circle">
                     <div class="avatar">
                         <div class="w-8 rounded-full">
-                            <img src="{{ auth()->user()->avatar }}" alt="{{ auth()->user()->name }}" />
+                            <a href="{{ route('profile.edit') }}">
+                                <img src="{{
+                                    filter_var(
+                                        auth()->user()->avatar,
+                                        FILTER_VALIDATE_URL
+                                    ) ?
+                                    auth()->user()->avatar :
+                                    asset(auth()->user()->avatar)
+                                }}" alt="{{ auth()->user()->name }}" />
+                            </a>
                         </div>
                     </div>
                 </button>
