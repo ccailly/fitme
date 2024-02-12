@@ -18,3 +18,5 @@ yarn-error.log
 /.idea
 /.vscode
 /docker/database
+/public/avatars
+/public/images/posts

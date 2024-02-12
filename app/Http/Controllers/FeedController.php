@@ -103,8 +103,8 @@ class FeedController extends Controller
             $imageName = time().'.'.$request->image->extension();
 
             // Public Folder
-            $request->image->move(public_path('images'), $imageName);
-            $imagePath = '/images/' . $imageName;
+            $request->image->move(public_path('images/posts'), $imageName);
+            $imagePath = '/images/posts/' . $imageName;
         }
 
         $post = Post::create([
