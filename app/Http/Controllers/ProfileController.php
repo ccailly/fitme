@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Sport;
+use App\Models\UserSports;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -16,7 +18,13 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        $sports = Sport::all();
+        $user_sports = UserSports::where('user_id', $request->user()->id)->get('sport_id');
+        $selected_sports = Sport::whereIn('id', $user_sports);
+
         return view('profile.edit', [
+            'sports' => $sports,
+            'selected_sports' => $selected_sports,
             'user' => $request->user(),
         ]);
     }
@@ -29,6 +37,7 @@ class ProfileController extends Controller
         $request->user()->fill($request->validated());
         $request->validate([
             'avatar' => 'sometimes|image|mimes:jpeg,png,jpg,svg|max:2048|nullable',
+            'sports' => 'regex:/^[\d,]+$/|nullable',
         ]);
 
         if ($request->user()->isDirty('email')) {
@@ -47,6 +56,21 @@ class ProfileController extends Controller
         if ($avatarPath !== null) {
             $request->user()->avatar = $avatarPath;
         }
+
+        if ($request->has('sports')) {
+            UserSports::where('user_id', $request->user()->id)->delete();
+
+            $sports_ids = explode(',', trim($request->sports));
+            foreach ($sports_ids as $sport_id) {
+                if (trim($sport_id) !== '') {
+                    UserSports::create([
+                        'user_id' => $request->user()->id,
+                        'sport_id' => $sport_id
+                    ]);
+                }
+            }
+        }
+
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');

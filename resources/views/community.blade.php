@@ -41,9 +41,9 @@
                 @endforeach
             </div>
             @if ($members->nb > 6)
-                <label @click="fetchMembers()" for="modal_members" class="btn btn-accent btn-outline btn-sm mt-3">
-                    Voir tous les membres
-                </label>
+                 tous les membres
+                </label><label @click="fetchMembers()" for="modal_members" class="btn btn-accent btn-outline btn-sm mt-3">
+                    Voir
 
                 <input type="checkbox" id="modal_members" class="modal-toggle" />
                 <div class="modal" role="dialog">
