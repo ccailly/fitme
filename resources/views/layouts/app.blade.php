@@ -18,6 +18,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href='https://fullcalendar.io/releases/main/base.css' rel='stylesheet' />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -85,7 +86,7 @@
             <a class="text-primary @if ($activeTab == 2) active @endif" href="{{ route('communities') }}">
                 <x-heroicon-o-user-group class="h-5 w-5" />
             </a>
-            <a class="text-primary @if ($activeTab == 3) active @endif">
+            <a class="text-primary @if ($activeTab == 3) active @endif" href="{{ route('events') }}">
                 <x-heroicon-o-calendar class="h-5 w-5" />
             </a>
             <a class="text-primary @if ($activeTab == 4) active @endif">

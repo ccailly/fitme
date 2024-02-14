@@ -2,12 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Community;
 use App\Models\Event;
 use App\Models\EventParticipants;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $event_participations = EventParticipants::where('user_id', $request->user()->id)->get('event_id');
+        $events = Event::orderBy('date_time', 'asc')->whereIn('id', $event_participations)->get();
+
+        foreach ($events as $event) {
+            $event->community = Community::find($event->community_id);
+            $event->participants = EventParticipants::where('event_id', $event->id)->count();
+            $event->date_time = \Carbon\Carbon::createFromTimestamp(strtotime($event->date_time));
+        }
+
+        return view('events', [
+            'events' => $events,
+        ]);
+    }
+
     public function toggleParticipate(Request $request)
     {
         $request->validate([
