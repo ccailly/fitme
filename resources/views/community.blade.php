@@ -41,17 +41,14 @@
                 @endforeach
             </div>
             @if ($members->nb > 6)
-                 tous les membres
-                </label><label @click="fetchMembers()" for="modal_members" class="btn btn-accent btn-outline btn-sm mt-3">
-                    Voir
-
+                <label @click="fetchMembers()" for="modal_members" class="btn btn-accent btn-outline btn-sm mt-3">Voir tous les membres</label>
                 <input type="checkbox" id="modal_members" class="modal-toggle" />
                 <div class="modal" role="dialog">
                     <div class="flex flex-col items-center modal-box max-h-[70%] overflow-y-hidden">
                         <h3 class="fixed font-bold text-lg">Membres</h3>
                         <ul class="min-w-full py-4 mt-8 mb-6  max-h-[28rem] overflow-y-scroll">
                             <template x-for="member in allMembers" :key="member.id">
-                                <li class="card bordered bg-base-100 mx-2 mb-4">
+                                <li class="card bordered bg-base-300 mx-2 mb-4">
                                     <a href="{{ route('user.show', ['user_id' => $member->id]) }}"
                                         class="card-body -m-2">
                                         <div class="flex flex-col justify-between">

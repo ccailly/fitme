@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [FeedController::class, 'index'])->name('feed');
     Route::post('/', [FeedController::class, 'addPost'])->name('feed.post');
 
+    Route::get('/communities', [CommunityController::class, 'index'])->name('communities');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

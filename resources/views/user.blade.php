@@ -1,7 +1,7 @@
 <x-app-layout title="Utilisateur" activeTab="1">
     <div class="flex flex-col">
         <img class="w-full h-auto mt-[-1.5rem]" src="https://source.unsplash.com/1500x500/?sport-{{ $user->name }}" />
-        <div class="w-28 mt-[-3.5rem] ml-8 bg-base-100 rounded-full ring ring-primary ring-offset-primary ring-offset-1 ring-">
+        <div class="w-28 mt-[-3.5rem] ml-8 bg-base-300 rounded-full ring ring-primary ring-offset-primary ring-offset-1 ring-">
             <img class="p-1 rounded-full" src="{{ $user->avatar }}" />
         </div>
     </div>

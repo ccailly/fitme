@@ -79,18 +79,18 @@
 
         <!-- Page Navigation -->
         <div class="btm-nav">
-            <button class="text-primary @if ($activeTab == 1) active @endif">
+            <a class="text-primary @if ($activeTab == 1) active @endif" href="{{ route('feed') }}">
                 <x-heroicon-o-home class="h-5 w-5" />
-            </button>
-            <button class="text-primary @if ($activeTab == 2) active @endif">
+            </a>
+            <a class="text-primary @if ($activeTab == 2) active @endif" href="{{ route('communities') }}">
                 <x-heroicon-o-user-group class="h-5 w-5" />
-            </button>
-            <button class="text-primary @if ($activeTab == 3) active @endif">
+            </a>
+            <a class="text-primary @if ($activeTab == 3) active @endif">
                 <x-heroicon-o-calendar class="h-5 w-5" />
-            </button>
-            <button class="text-primary @if ($activeTab == 4) active @endif">
+            </a>
+            <a class="text-primary @if ($activeTab == 4) active @endif">
                 <x-heroicon-o-chat-bubble-left-right class="h-5 w-5" />
-            </button>
+            </a>
         </div>
     </div>
 </body>

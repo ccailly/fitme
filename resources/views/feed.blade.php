@@ -14,14 +14,14 @@
             <span x-text="error" class="text-left text-xs"></span>
         </div>
         @foreach ($feed_posts as $feed_post)
-            <div class="card bordered bg-base-100 mx-2 mb-4">
+            <div class="card bordered bg-base-300 mx-2 mb-4">
                 <div class="card-body -m-2">
                     <div class="flex flex-row justify-between">
-                        <div class="justify-start items-center card-actions">
+                        <div class="flex flex-row flex-nowrap justify-start items-center card-actions w-2/3">
                             <img src="{{ $feed_post->user->avatar }}" class="w-10 rounded-full">
-                            <div class="flex flex-col">
-                                <a href="{{ route('user.show', ['user_id' => $feed_post->user->id]) }}"
-                                    class="text-xs font-extrabold">{{ $feed_post->user->name }}</a>
+                            <div class="flex flex-col line-clamp-1">
+                                <p href="{{ route('user.show', ['user_id' => $feed_post->user->id]) }}"
+                                    class="text-xs font-extrabold line-clamp-1">{{ $feed_post->user->name }}</p>
                                 <div class="flex flex-row gap-1">
                                     <img src="{{ $feed_post->community->image }}" class="w-4 rounded-full">
                                     <a href="{{ route('community.show', ['community_id' => $feed_post->community->id]) }}"
@@ -29,27 +29,21 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-row justify-end items-center card-actions">
+                        <div class="flex flex-row justify-end items-center card-actions w-1/3">
                             <p class="font-extrabold">•</p>
                             <p class="text-xs">{{ $feed_post->date->diffForHumans() }}</p>
                         </div>
                     </div>
                     <p class="card-title text-xs mt-4">{{ $feed_post->content }}</p>
                     @if ($feed_post->image)
-                        <img src="{{
-                            filter_var(
-                                $feed_post->image,
-                                FILTER_VALIDATE_URL
-                            ) ?
-                            $feed_post->image :
-                            asset($feed_post->image)
-                        }}" class="w-full mt-4 max-h-64 max-w-64 object-cover">
+                        <img src="{{ filter_var($feed_post->image, FILTER_VALIDATE_URL) ? $feed_post->image : asset($feed_post->image) }}"
+                            class="w-full mt-4 max-h-64 max-w-64 object-cover">
                     @endif
                     @if (isset($feed_post->event))
                         <div class="divider"></div>
                         <div class="card border border-dashed border-info">
                             <div
-                                class="absolute flex flex-row bg-base-100 left-16 right-16 -top-4 text-xl font-extrabold text-center">
+                                class="absolute flex flex-row bg-base-300 left-16 right-16 -top-4 text-xl font-extrabold text-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-warning">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -103,8 +97,11 @@
                                 </div>
                                 <div class="justify-end card-actions">
                                     <button class="btn btn-accent" x-on:click="toggleParticipate"
-                                        x-bind:class="{ 'btn-outline': !participate, 'cursor-not-allowed btn-disabled': (
-                                                participants >= max_participants) && !participate }"
+                                        x-bind:class="{
+                                            'btn-outline': !participate,
+                                            'cursor-not-allowed btn-disabled': (
+                                                participants >= max_participants) && !participate
+                                        }"
                                         x-text="participate ? 'Je participe !' : 'Participer'">
                                     </button>
                                 </div>
@@ -199,20 +196,18 @@
                                 <h3 class="fixed font-bold text-lg">Commentaires</h3>
                                 <ul class="py-4 mt-8 mb-6  max-h-[28rem] overflow-y-scroll">
                                     <template x-for="comment in comments">
-                                        <div class="card bordered bg-base-100 mx-2 mb-4">
+                                        <div class="card bordered bg-base-300 mx-2 mb-4">
                                             <div class="card-body -m-2">
                                                 <div class="flex flex-col justify-between">
                                                     <div class="flex flex-row justify-between">
-                                                        <div class="justify-start items-center card-actions">
+                                                        <div class="flex flex-row flex-nowrap justify-start items-center card-actions w-3/5">
                                                             <img :src="comment.user.avatar" class="w-6 rounded-full">
-                                                            <div class="flex flex-col">
-                                                                <a :href="'/user/' + comment.user.id"
-                                                                    class="text-xs font-extrabold"
-                                                                    x-text="comment.user.name"></a>
-                                                            </div>
+                                                            <a :href="'/user/' + comment.user.id"
+                                                                class="text-xs font-extrabold line-clamp-1"
+                                                                x-text="comment.user.name"></a>
                                                         </div>
                                                         <div
-                                                            class="flex flex-row justify-end items-center card-actions">
+                                                            class="flex flex-row flex-nowrap justify-end items-center card-actions w-2/5">
                                                             <p class="font-extrabold">•</p>
                                                             <p class="text-xs" x-text="comment.posted_date"></p>
                                                         </div>

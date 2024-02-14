@@ -27,7 +27,7 @@
         </div>
 
         <ul tabindex="0" x-show="open"
-            class="max-h-44 overflow-y-scroll dropdown-content z-[1] p-2 shadow bg-base-100 rounded-box w-52 absolute">
+            class="max-h-44 overflow-y-scroll dropdown-content z-[1] p-2 shadow bg-base-300 rounded-box w-52 absolute">
             @foreach ($items as $item)
                 <li class="text-gray-900 cursor-default select-none relative py-2 pl-3 pr-9" role="option">
                     <div class="flex items-center">

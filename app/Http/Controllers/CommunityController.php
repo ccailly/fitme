@@ -4,17 +4,46 @@ namespace App\Http\Controllers;
 
 use App\Models\Community;
 use App\Models\CommunityMembers;
+use App\Models\CommunitySports;
 use App\Models\Event;
 use App\Models\EventParticipants;
 use App\Models\EventPosts;
 use App\Models\Post;
+use App\Models\Sport;
 use App\Models\User;
+use App\Models\UserSports;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class CommunityController extends Controller
 {
+
+    public function index(Request $request): View
+    {
+        $user_sports_ids = UserSports::where('user_id', $request->user()->id)->pluck('sport_id');
+
+        $user_communities_ids = CommunityMembers::where('user_id', $request->user()->id)->pluck('community_id');
+
+        $communities_sports = CommunitySports::whereIn('sport_id', $user_sports_ids)->pluck('community_id');
+
+        $communities = Community::whereIn('id', $communities_sports)->whereNotIn('id', $user_communities_ids);
+
+        $other_communities = Community::whereNotIn('id', $communities_sports)->whereNotIn('id', $user_communities_ids);
+
+        $communities = $communities->union($other_communities)->get();
+
+        foreach ($communities as $community) {
+            $community->members = CommunityMembers::where('community_id', $community->id)->get()->count();
+            $community->following = CommunityMembers::where('community_id', $community->id)->where('user_id', $request->user()->id)->exists();
+            $community->sports = Sport::whereIn('id', CommunitySports::where('community_id', $community->id)->get('sport_id'))->get();
+        }
+
+        return view('communities', [
+            'communities' => $communities,
+        ]);
+    }
+
     public function show(Request $request, $community_id): View
     {
         $community = Community::findOrFail($community_id);
