@@ -40,7 +40,6 @@
                                     name: '{{ $item->name }}',
                                     color: colors[Math.floor(Math.random() * colors.length)] 
                                 });
-                                console.log(items); 
                             } else {
                                 const index = items.findIndex(i => i.id === '{{ $item->id }}');
                                 if (index > -1) { items.splice(index, 1); }
