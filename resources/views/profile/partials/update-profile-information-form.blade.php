@@ -54,7 +54,7 @@
             @endif
         </div>
 
-        <x-items-selector name="sports" :items="$sports" :selected="$selected_sports"></x-items-selector>
+        <x-items-selector name="sports" :items="$sports" :selected="$selected_sports" placeholder="Selectionnez vos sports" />
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Enregistrer') }}</x-primary-button>

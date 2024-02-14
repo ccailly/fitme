@@ -1,4 +1,4 @@
-<x-app-layout title="Communauté" activeTab="1">
+<x-app-layout title="Communauté" activeTab="2">
     <div class="p-6" x-data="{
         following: {{ $following ? 'true' : 'false' }},
         members: {{ $members->nb }},
@@ -9,7 +9,7 @@
                     <img src="{{ $community->image }}" alt="{{ $community->name }}">
                 </div>
             </div>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2 w-full">
                 <h2 class="text-2xl font-extrabold">{{ $community->name }}</h2>
                 <p class="text-xs">{{ $community->description }}</p>
                 <button class="btn btn-primary" x-on:click="toggleFollow" x-bind:class="{ 'btn-outline': !following }"

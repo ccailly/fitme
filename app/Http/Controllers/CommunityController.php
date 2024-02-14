@@ -14,6 +14,7 @@ use App\Models\User;
 use App\Models\UserSports;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class CommunityController extends Controller
@@ -23,24 +24,26 @@ class CommunityController extends Controller
     {
         $user_sports_ids = UserSports::where('user_id', $request->user()->id)->pluck('sport_id');
 
-        $user_communities_ids = CommunityMembers::where('user_id', $request->user()->id)->pluck('community_id');
-
         $communities_sports = CommunitySports::whereIn('sport_id', $user_sports_ids)->pluck('community_id');
 
-        $communities = Community::whereIn('id', $communities_sports)->whereNotIn('id', $user_communities_ids);
+        $communities = Community::whereIn('id', $communities_sports);
 
-        $other_communities = Community::whereNotIn('id', $communities_sports)->whereNotIn('id', $user_communities_ids);
+        $other_communities = Community::whereNotIn('id', $communities_sports);
 
         $communities = $communities->union($other_communities)->get();
 
-        foreach ($communities as $community) {
-            $community->members = CommunityMembers::where('community_id', $community->id)->get()->count();
+        $communities = $communities->map(function ($community) use ($request) {
+            $community->members = CommunityMembers::where('community_id', $community->id)->count();
             $community->following = CommunityMembers::where('community_id', $community->id)->where('user_id', $request->user()->id)->exists();
-            $community->sports = Sport::whereIn('id', CommunitySports::where('community_id', $community->id)->get('sport_id'))->get();
-        }
+            $community->sports = Sport::whereIn('id', CommunitySports::where('community_id', $community->id)->pluck('sport_id'))->get();
+            return $community;
+        })->sortByDesc('members')->values();
+
+        $sports = Sport::all();
 
         return view('communities', [
             'communities' => $communities,
+            'sports' => $sports,
         ]);
     }
 
@@ -68,6 +71,55 @@ class CommunityController extends Controller
             'events' => $events,
             'following' => $following,
         ]);
+    }
+
+    public function addCommunity(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'name' => 'required|string|max:100',
+            'description' => 'required|string|max:255',
+            'sports' => 'regex:/^[\d,]+$/|nullable',
+        ]);
+
+        $community = Community::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'image' => null,
+        ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imageName = $community->id.'.'.$request->image->extension();
+
+            // Public Folder
+            $request->image->move(public_path('images/communities'), $imageName);
+            $imagePath = '/images/communities/' . $imageName;
+        }
+
+        if ($imagePath !== null) {
+            $community->image = $imagePath;
+            $community->save();
+        }
+
+        if ($request->has('sports')) {
+            $sports_ids = explode(',', trim($request->sports));
+            foreach ($sports_ids as $sport_id) {
+                if (trim($sport_id) !== '') {
+                    CommunitySports::create([
+                        'community_id' => $community->id,
+                        'sport_id' => $sport_id
+                    ]);
+                }
+            }
+        }
+
+        CommunityMembers::create([
+            'community_id' => $community->id,
+            'user_id' => $request->user()->id,
+        ]);
+
+        return redirect()->route('community.show', ['community_id' => $community->id]);
     }
 
     public function getAllMembers($community_id): JsonResponse
