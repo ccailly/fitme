@@ -3,6 +3,7 @@
     'selected' => collect(),
     'name' => '',
     'colors' => ['accent', 'primary', 'secondary', 'info', 'success', 'warning', 'error'],
+    'label' => '',
     'placeholder' => '',
 ])
 
@@ -17,7 +18,7 @@
     colors: {{ json_encode($colors) }},
     open: false
 }" x-init="items = items.map(item => ({ ...item, color: colors[Math.floor(Math.random() * colors.length)] }))">
-    <label for="{{ $name }}" class="block text-sm font-medium mb-2">Selectionner vos sports</label>
+    <label for="{{ $name }}" class="block text-sm font-medium mb-2">{{ $label }}</label>
 
     <div class="relative">
         <div tabindex="0" role="button" @click="open = !open"

@@ -49,7 +49,7 @@
                 <textarea class="textarea textarea-bordered h-24" name="description" placeholder="Description"></textarea>
             </label>
 
-            <x-items-selector :items="$sports" name="sports" placeholder="Selectionnez vos sports" />
+            <x-items-selector :items="$sports" name="sports" label="Selectionnez des sports" placeholder="Selectionnez des sports" />
 
             <div class="modal-action">
                 <button type="submit" class="w-full btn btn-primary">Créer</button>
