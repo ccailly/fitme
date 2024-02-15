@@ -46,6 +46,10 @@ class UserController extends Controller
                 $most_connected_user = $user;
             }
         }
-        return redirect()->route('login', ['email' => $most_connected_user->email]);
+        
+        return redirect()->route('login', [
+            'email' => $most_connected_user->email,
+            'password' => 'password'
+        ]);
     }
 }

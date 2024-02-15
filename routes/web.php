@@ -44,6 +44,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/getAllMembers/{community_id}', [CommunityController::class, 'getAllMembers']);
 });
 
-Route::get('/getMostConnectedUser', [UserController::class, 'getMostConnectedUser']);
+Route::get('/getMostConnectedUser', [UserController::class, 'getMostConnectedUser'])->name('getMostConnectedUser');
 
 require __DIR__.'/auth.php';
